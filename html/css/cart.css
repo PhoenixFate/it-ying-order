@@ -101,6 +101,46 @@
   width: 10rem;
 }
 
+.cart_content .hot_food {
+  background: #fff;
+  border-radius: .5rem;
+  margin-top: 1rem;
+  margin-bottom: 10rem;
+}
+
+.cart_content .hot_food h3 {
+  font-size: 1.8rem;
+  padding: .5rem 0;
+}
+
+.cart_content .hot_food .item_list_outer {
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.cart_content .hot_food .item_list_outer .item_list {
+  padding: 0 0.5rem;
+  width: 50rem;
+}
+
+.cart_content .hot_food .item_list_outer .item_list li {
+  float: left;
+  width: 10rem;
+  padding: .5rem;
+  box-sizing: border-box;
+}
+
+.cart_content .hot_food .item_list_outer .item_list li .inner {
+  background-color: #fff;
+  width: 100%;
+  border-radius: .5rem;
+  overflow: hidden;
+}
+
+.cart_content .hot_food .item_list_outer .item_list li .inner img {
+  width: 100%;
+}
+
 /*购车加减*/
 .cart_num {
   width: 10rem;
@@ -133,4 +173,14 @@
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
   float: left;
+}
+
+/*购车空*/
+.cart_empty {
+  text-align: center;
+  line-height: 3;
+}
+
+.cart_empty h3 {
+  font-size: 1.8rem;
 }
