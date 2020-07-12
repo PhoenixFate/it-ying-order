@@ -123,10 +123,7 @@
         </div>
       </div>
     </div>
-    <div id="footer_nav" class="footer-nav">
-      <img src="../assets/images/nav/navigation.png" />
-      <p>导航</p>
-    </div>
+    <footer-Navigation></footer-Navigation>
     <div id="footer_book" class="footer-book">
       <img src="../assets/images/nav/menu.png" />
       <p>菜单</p>
@@ -139,7 +136,16 @@
 </template>
 
 <script>
-export default {};
+import footerNavigation from "./common/FooterNavigation";
+export default {
+  data() {
+    return {};
+  },
+  methods: {},
+  components: {
+    footerNavigation
+  }
+};
 </script>
 
 <style lang="scss">

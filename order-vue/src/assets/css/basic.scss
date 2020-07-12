@@ -1,43 +1,89 @@
 @charset "UTF-8";
-body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, dt, dd, a, img, button, form, table, th, tr, td, tbody, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-  margin: 0;
-  padding: 0; }
+body,
+div,
+ul,
+li,
+ol,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+textarea,
+select,
+p,
+dl,
+dt,
+dd,
+a,
+img,
+button,
+form,
+table,
+th,
+tr,
+td,
+tbody,
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	margin: 0;
+	padding: 0;
+}
 
+a {
+	text-decoration: none;
+	color: #333;
+}
+
+.router-link-active {
+	text-decoration: none;
+	color: #333;
+}
 html {
-  font-size: 62.5%;
-  /* 根元素是10px;     16*62.5%=10  默认在pc端根元素会解析成12px; 移动端解析成10px    */ }
+	font-size: 62.5%;
+	/* 根元素是10px;     16*62.5%=10  默认在pc端根元素会解析成12px; 移动端解析成10px    */
+}
 
 body {
-  font: 12px/1.5 'Microsoft YaHei','宋体', Tahoma, Arial, sans-serif;
-  color: #555;
-  background-color: #F7F7F7; }
+	font: 12px/1.5 "Microsoft YaHei", "宋体", Tahoma, Arial, sans-serif;
+	color: #555;
+	background-color: #f7f7f7;
+}
 
-em, i {
-  font-style: normal; }
+em,
+i {
+	font-style: normal;
+}
 
-ul, li {
-  list-style-type: none; }
+ul,
+li {
+	list-style-type: none;
+}
 
 strong {
-  font-weight: normal; }
+	font-weight: normal;
+}
 
 .clearfix:after {
-  content: "";
-  display: block;
-  visibility: hidden;
-  height: 0;
-  clear: both; }
+	content: "";
+	display: block;
+	visibility: hidden;
+	height: 0;
+	clear: both;
+}
 
 /*# sourceMappingURL=basic.css.map */
-
-
-
-
-
-
-
-
-
 
 // 首页导航
 .footer-nav {
@@ -46,31 +92,29 @@ strong {
 	background: #000;
 	position: fixed;
 	color: #fff;
-	bottom: .5rem;
-	left: .5rem;
+	bottom: 0.5rem;
+	left: 0.5rem;
 	text-align: center;
 	border-radius: 50%;
 	img {
 		height: 1.8rem;
 		width: 1.8rem;
-		margin-top: .5rem;
+		margin-top: 0.5rem;
 	}
 	p {
 		position: relative;
-		top:-.2rem;
+		top: -0.2rem;
 	}
 }
 
-
 .footer-nav-show {
-	display: none;
 	z-index: 3;
 	height: 100%;
 	width: 100%;
 	position: fixed;
 	left: 0;
 	top: 0;
-	background-color: rgba(0,0,0,0.6);
+	background-color: rgba(0, 0, 0, 0.6);
 	.list {
 		li {
 			z-index: 10;
@@ -79,44 +123,42 @@ strong {
 			background-color: #000;
 			position: absolute;
 			text-align: center;
-			color:#fff;
-			left: .5rem;
+			color: #fff;
+			left: 0.5rem;
 			border-radius: 50%;
 			img {
 				height: 1.8rem;
 				width: 1.8rem;
-				margin-top: .7rem;
-				
+				margin-top: 0.7rem;
 			}
 			p {
 				position: relative;
-				top:-.4rem;
+				top: -0.4rem;
 				font-size: 1rem;
 			}
-			   
-			&:nth-child(1){
+
+			&:nth-child(1) {
 				bottom: 15.4rem;
 				left: 0px;
-				
 			}
-			&:nth-child(2){
+			&:nth-child(2) {
 				bottom: 12.4rem;
 				left: 30%;
-				margin-left: -2.2rem;                
+				margin-left: -2.2rem;
 			}
-			&:nth-child(3){
+			&:nth-child(3) {
 				bottom: 7.4rem;
 				left: 45%;
 				margin-left: -2.2rem;
 			}
-			&:nth-child(4){
+			&:nth-child(4) {
 				left: 50%;
 				margin-left: -2.2rem;
-				bottom: .5rem;
+				bottom: 0.5rem;
 			}
-			&:nth-child(5){
-				left: .5rem;                
-				bottom: .5rem;
+			&:nth-child(5) {
+				left: 0.5rem;
+				bottom: 0.5rem;
 			}
 		}
 	}
@@ -127,22 +169,21 @@ strong {
 	width: 4.8rem;
 	background-color: red;
 	position: fixed;
-	color:#fff;
-	bottom:.5rem;
-	right: .5rem;
+	color: #fff;
+	bottom: 0.5rem;
+	right: 0.5rem;
 	text-align: center;
 	border-radius: 50%;
 	img {
 		height: 1.8rem;
 		width: 1.8rem;
-		margin-top: .7rem;
+		margin-top: 0.7rem;
 	}
 	p {
 		position: relative;
-		top:-.4rem;
+		top: -0.4rem;
 	}
 }
-
 
 .footer-book {
 	height: 4.8rem;
@@ -150,18 +191,18 @@ strong {
 	background: #000;
 	position: fixed;
 	color: #fff;
-	bottom: .5rem;
-  left: 50%;
-  margin-left:-2.4rem;
+	bottom: 0.5rem;
+	left: 50%;
+	margin-left: -2.4rem;
 	text-align: center;
 	border-radius: 50%;
 	img {
 		height: 1.8rem;
 		width: 1.8rem;
-		margin-top: .5rem;
+		margin-top: 0.5rem;
 	}
 	p {
 		position: relative;
-		top:-.2rem;
+		top: -0.2rem;
 	}
 }

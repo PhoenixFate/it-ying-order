@@ -12,7 +12,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [{
-      path: '/',
+      path: '/start',
       name: 'Start',
       title: "",
       component: Start
@@ -27,8 +27,9 @@ export default new Router({
       name: "Hot",
       component: Hot
     },
+    // 动态路由
     {
-      path: "/food",
+      path: "/food/:id",
       name: "Food",
       component: Food
     },
@@ -46,6 +47,10 @@ export default new Router({
       path: "/search",
       name: "/Search",
       component: Search
+    },
+    {
+      path:"*",
+      redirect:'/start',
     }
 
   ]
