@@ -5,79 +5,50 @@
         <h2>购物车</h2>
         <div class="p_number">
           <div class="p_number_left">
-            <p>用餐人数:2人</p>
-            <p>备注:无</p>
+            <p>用餐人数:{{peopleList.p_num}}人</p>
+            <p>备注:{{peopleList.p_mark?peopleList.p_mark:"无"}}</p>
           </div>
-          <div class="p_number_right">
-            <img src="../assets/images/cart/edit.png" />
-            <p>修改</p>
-          </div>
+          <router-link to="/editPeopleInfo">
+            <div class="p_number_right">
+              <img src="../assets/images/cart/edit.png" />
+              <p>修改</p>
+            </div>
+          </router-link>
         </div>
         <div class="cart_p_num">
-          <p>购物车中总共有6个菜</p>
+          <p>购物车中总共有{{totalNumber}}个菜</p>
           <p>
             合计：
-            <span class="price">¥58</span>
+            <span class="price">¥{{totalPrice}}</span>
           </p>
         </div>
       </div>
-      <div class="cart_list">
+      <div class="cart_list" v-if="totalNumber">
         <ul>
-          <li class="item">
+          <li class="item" v-for="(food,index) in cartList" :key="food._id">
             <div class="left_food">
-              <img src="../assets/images/food/1.jpeg" />
+              <img :src="api+food.img_url" />
               <div class="food_info">
-                <p>老干妈炒肥肠</p>
-                <p class="price">¥48</p>
+                <p>{{food.title}}</p>
+                <p class="price">¥{{food.price}}</p>
               </div>
             </div>
             <div class="right_cart">
               <div class="cart_num">
-                <div class="input_left">-</div>
+                <div class="input_left" @click="minusNumber(food,index)">-</div>
                 <div class="input_center">
-                  <input type="text" readonly="readonly" value="1" name="num" id="num" />
+                  <input type="text" readonly="readonly" v-model="food.num" name="num" id="num" />
                 </div>
-                <div class="input_right">+</div>
-              </div>
-            </div>
-          </li>
-          <li class="item">
-            <div class="left_food">
-              <img src="../assets/images/food/1.jpeg" />
-              <div class="food_info">
-                <p>老干妈炒肥肠</p>
-                <p class="price">¥48</p>
-              </div>
-            </div>
-            <div id="right_cart">
-              <div class="cart_num">
-                <div class="input_left">-</div>
-                <div class="input_center">
-                  <input type="text" readonly="readonly" value="1" name="num" id="num" />
-                </div>
-                <div class="input_right">+</div>
-              </div>
-            </div>
-          </li>
-          <li class="item">
-            <div class="left_food">
-              <img src="../assets/images/food/1.jpeg" />
-              <div class="food_info">
-                <p>老干妈炒肥肠</p>
-                <p class="price">¥48</p>
-              </div>
-            </div>
-            <div id="right_cart">
-              <div class="cart_num">
-                <div class="input_left">-</div>
-                <div class="input_center">
-                  <input type="text" readonly="readonly" value="1" name="num" id="num" />
-                </div>
-                <div class="input_right">+</div>
+                <div class="input_right" @click="addNumber(food)">+</div>
               </div>
             </div>
           </li>
         </ul>
+      </div>
+
+      <div v-if="!totalNumber" class="cart_empty">
+        <h3>您的购物车空空如也</h3>
+        <h3>请点击菜单进行点餐</h3>
       </div>
 
       <div class="hot_food">
@@ -124,24 +95,117 @@
       </div>
     </div>
     <footer-Navigation></footer-Navigation>
-    <div id="footer_book" class="footer-book">
-      <img src="../assets/images/nav/menu.png" />
-      <p>菜单</p>
-    </div>
+    <router-link to="/home">
+      <div id="footer_book" class="footer-book">
+        <img src="../assets/images/nav/menu.png" />
+        <p>菜单</p>
+      </div>
+    </router-link>
+
     <div id="footer_cart" class="footer-cart">
-      <img src="../assets/images/nav/cart.png" />
-      <p>购物车</p>
+      <img src="../assets/images/nav/doorder.png" />
+      <p>下单</p>
     </div>
   </div>
 </template>
 
 <script>
 import footerNavigation from "./common/FooterNavigation";
+import config from "../model/config";
 export default {
   data() {
-    return {};
+    return {
+      api: config.api,
+      cartList: [],
+      totalPrice: 0,
+      totalNumber: 0,
+      peopleList: ""
+    };
   },
-  methods: {},
+  mounted() {
+    this.requestCartList();
+    this.getPeopleInfoList();
+  },
+  methods: {
+    requestCartList() {
+      let api = this.api + "api/cartList?uid=s001";
+      this.$http.get(api).then(
+        res => {
+          console.log(res);
+          this.cartList = res.body.result;
+          this.getTotal();
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    },
+    getTotal() {
+      let totalPrice = 0;
+      let totalNumber = 0;
+      this.cartList.forEach(element => {
+        totalPrice += parseFloat(element.price) * parseInt(element.num);
+        totalNumber += parseInt(element.num);
+      });
+      this.totalPrice = totalPrice;
+      this.totalNumber = totalNumber;
+    },
+    addNumber(food) {
+      console.log(food);
+      // 更新服务器端端数据
+      let product_id = food.product_id;
+      let num = food.num;
+      let api =
+        this.api +
+        "api/incCart?uid=s001&product_id=" +
+        product_id +
+        "&num=" +
+        num;
+      this.$http.get(api).then(
+        res => {
+          console.log(res);
+        },
+        error => {}
+      );
+      food.num++;
+      this.getTotal();
+    },
+    minusNumber(food, index) {
+      let product_id = food.product_id;
+      let num = food.num;
+      let api =
+        this.api +
+        "api/decCart?uid=s001&product_id=" +
+        product_id +
+        "&num=" +
+        num;
+      this.$http.get(api).then(
+        res => {
+          console.log(res);
+        },
+        error => {}
+      );
+
+      if (food.num <= 1) {
+        this.cartList.splice(index, 1);
+      } else {
+        food.num--;
+      }
+      this.getTotal();
+    },
+    getPeopleInfoList() {
+      let url = this.api + "api/peopleInfoList?uid=s001";
+      this.$http.get(url, {}).then(
+        res => {
+          console.log(res);
+          if (res.body.success == "true") {
+            this.peopleList = res.body.result[0];
+          }
+        },
+        error => {}
+      );
+    }
+  },
   components: {
     footerNavigation
   }
@@ -302,10 +366,14 @@ export default {
 
 // /*购车空*/
 .cart_empty {
+  height: 11rem;
   text-align: center;
-  line-height: 3;
+  line-height: 2;
   h3 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+    &:nth-child(1){
+      margin-top: 7rem;
+    }
   }
 }
 </style>

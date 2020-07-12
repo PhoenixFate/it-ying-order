@@ -2,7 +2,7 @@
   <div id="start">
     <div class="start-content">
       <header class="start-header">
-        <img src="../assets/images/start/canju.png" alt /> 用餐人数
+        <img src="../assets/images/start/canju.png" alt /> 修改用餐人数
       </header>
       <p class="notice">请选择正确的用餐人数 ，小二马上给你送餐具</p>
       <div class="content">
@@ -22,14 +22,19 @@
         </ul>
       </div>
     </div>
-    <div id="start" class="start" @click="addPeopleInfo()">
-      <span>开始点菜</span>
+    <div id="start_cancel" class="start-cancel">
+      <router-link to="/cart">
+        <span>取消</span>
+      </router-link>
+    </div>
+    <div id="start-_ure" class="start-sure" @click="editPeopleInfo()">
+      <span>确定</span>
     </div>
   </div>
 </template>
 
 <script>
-import config from '../model/config'
+import config from "../model/config";
 export default {
   data() {
     return {
@@ -50,11 +55,13 @@ export default {
           data: "微辣"
         }
       ],
-      api:config.api
+      api: config.api,
+      peopleList: ""
     };
   },
   mounted() {
     this.initData();
+    this.getPeopleInfoList();
   },
   methods: {
     initData() {
@@ -62,7 +69,6 @@ export default {
       for (let i = 0; i < 12; i++) {
         personData.push({ selected: false, number: i + 1 });
       }
-      personData[0].selected = true;
       this.currentSelected = 0;
       this.personData = personData;
     },
@@ -82,22 +88,51 @@ export default {
       }
       this.markData[index].selected = !this.markData[index].selected;
     },
-    addPeopleInfo() {
-      let api=this.api+"api/addPeopleInfo"
-      this.$http.post(api,{
-        uid:"s001",
-        p_num:this.currentSelected+1,
-        p_mark:this.markInput
-      }).then((res)=>{
-        console.log(res)
-        if(res.body.success=="true"){
-          this.$router.push({
-            path:"/home"
-          })
-        }
-      },(error)=>{
-        console.log(error)
-      })
+    editPeopleInfo() {
+      let api = this.api + "api/addPeopleInfo";
+      this.$http
+        .post(api, {
+          uid: "s001",
+          p_num: this.currentSelected + 1,
+          p_mark: this.markInput
+        })
+        .then(
+          res => {
+            console.log(res);
+            if (res.body.success == "true") {
+              this.$router.push({
+                path: "/cart"
+              });
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    },
+    getPeopleInfoList() {
+      let url = this.api + "api/peopleInfoList?uid=s001";
+      this.$http.get(url, {}).then(
+        res => {
+          console.log(res);
+          if (res.body.success == "true") {
+            this.peopleList = res.body.result[0];
+            this.personData[this.peopleList.p_num - 1].selected = true;
+            this.currentSelected=this.peopleList.p_num - 1
+            this.markInput = this.peopleList.p_mark;
+            if (this.markInput.indexOf("打包带走") !== -1) {
+              this.markData[0].selected = true;
+            }
+            if (this.markInput.indexOf("不要放辣椒") !== -1) {
+              this.markData[1].selected = true;
+            }
+            if (this.markInput.indexOf("微辣") !== -1) {
+              this.markData[2].selected = true;
+            }
+          }
+        },
+        error => {}
+      );
     }
   }
 };
@@ -168,10 +203,31 @@ export default {
   }
 }
 
-.start {
+.start-cancel {
   position: fixed;
   bottom: 5rem;
-  left: 50%;
+  left: 5rem;
+  width: 7.2rem;
+  height: 7.2rem;
+  background-color: #4092ee;
+  color: #fff;
+  border-radius: 50%;
+  span {
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    top: 2.5rem;
+    text-align: center;
+    font-size: 1.6rem;
+  }
+  a {
+    color: #fff;
+  }
+}
+.start-sure {
+  position: fixed;
+  bottom: 5rem;
+  right: 3rem;
   width: 7.2rem;
   height: 7.2rem;
   background-color: red;
@@ -180,10 +236,11 @@ export default {
   margin-left: -3.6rem;
   span {
     display: block;
-    width: 3rem;
     margin: 0 auto;
     position: relative;
-    top: 1.8rem;
+    top: 2.5rem;
+    text-align: center;
+    font-size: 1.6rem;
   }
 }
 </style>

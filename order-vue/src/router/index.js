@@ -7,6 +7,7 @@ import Home from "../components/Home"
 import Hot from "../components/Hot"
 import Order from "../components/Order"
 import Search from "../components/Search"
+import EditPeopleInfo from "../components/EditPeopleInfo"
 
 Vue.use(Router)
 
@@ -47,6 +48,11 @@ export default new Router({
       path: "/search",
       name: "/Search",
       component: Search
+    },
+    {
+      path: "/editPeopleInfo",
+      name: "/EditPeopleInfo",
+      component: EditPeopleInfo
     },
     {
       path:"*",

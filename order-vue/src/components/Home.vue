@@ -16,7 +16,11 @@
     </header>
     <aside class="left-cate" id="left_cate" :class="{'left-cate-show': asideShow}">
       <ul>
-        <li v-for="(category,index) in foodList" :key="category._id"  @click="changeList(index)" >{{category.title}}</li>
+        <li
+          v-for="(category,index) in foodList"
+          :key="category._id"
+          @click="changeList(index)"
+        >{{category.title}}</li>
       </ul>
       <div id="nav_cate" class="nav-cate" @click="changeAside()">
         <img src="../assets/images/index/nav.png" />
@@ -33,7 +37,7 @@
                 <img :src="api+food.img_url" />
                 <p class="title">{{food.title}}</p>
                 <p class="price">¥{{food.price}}</p>
-            </div>
+              </div>
             </router-link>
           </li>
         </ul>
@@ -48,6 +52,7 @@
       <div id="footer_cart" class="footer-cart">
         <img src="../assets/images/nav/cart.png" />
         <p>购物车</p>
+        <span class="num" v-if="cartNum!=0">{{cartNum}}</span>
       </div>
     </router-link>
   </div>
@@ -56,41 +61,56 @@
 <script>
 import footerNavigation from "./common/FooterNavigation";
 // 引入配置文件
-import config from '../model/config'
+import config from "../model/config";
 export default {
   data() {
     return {
       asideShow: false,
-      foodList:[],
-      api:config.api
+      foodList: [],
+      api: config.api,
+      cartNum:0,
     };
   },
   mounted() {
-    this.requestData()
+    this.requestData();
+    this.getCartCount()
   },
   methods: {
     changeAside() {
       this.asideShow = !this.asideShow;
     },
     requestData() {
-      let url=this.api+"api/productList"
-      this.$http
-        .get(url, { params: {} })
-        .then(
-          function(res) {
-            console.log(res);
-            // 响应成功回调
-            this.foodList=res.body.result
-          },
-          function(res) {
-            console.log(res);
-            // 响应错误回调
-          }
-        );
+      let url = this.api + "api/productList";
+      this.$http.get(url, { params: {} }).then(
+        function(res) {
+          console.log(res);
+          // 响应成功回调
+          this.foodList = res.body.result;
+        },
+        function(res) {
+          console.log(res);
+          // 响应错误回调
+        }
+      );
     },
-    changeList(index){
-      var itemCateDom=document.querySelectorAll(".item-cate")
-      document.documentElement.scrollTop=itemCateDom[index].offsetTop;
+    getCartCount() {
+      //uid 桌子id，是扫描二维码之后从url获取的
+      let url = this.api + "api/cartCount?uid=s001";
+      this.$http.get(url, { params: {} }).then(
+        function(res) {
+          console.log(res);
+          // 响应成功回调
+          this.cartNum=res.body.result
+        },
+        function(res) {
+          console.log(res);
+          // 响应错误回调
+        }
+      );
+    },
+    changeList(index) {
+      var itemCateDom = document.querySelectorAll(".item-cate");
+      document.documentElement.scrollTop = itemCateDom[index].offsetTop;
       this.asideShow = !this.asideShow;
     }
   },
@@ -144,7 +164,7 @@ export default {
         overflow: hidden;
         img {
           width: 100%;
-          height: 100%;
+          height: 10rem;
         }
         p {
           padding: 0.2rem 0.5rem;

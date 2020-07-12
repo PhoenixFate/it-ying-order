@@ -3,7 +3,7 @@
     <router-link to="/home">
       <div class="back">返回</div>
     </router-link>
-    <div class="p_content" v-if="food">
+    <div class="p_content" v-if="food.img_url">
       <div class="p_info">
         <img :src="api+food.img_url" />
         <h2>{{food.title}}</h2>
@@ -17,7 +17,6 @@
           <p>{{food.description}}</p>
           <br />
           <div v-html="food.content">
-
           </div>
         </div>
       </div>
@@ -27,14 +26,14 @@
       <div class="cart">
         <strong>数量:</strong>
         <div class="cart_num">
-          <div class="input_left">-</div>
+          <div class="input_left" @click="minusNum()">-</div>
           <div class="input_center">
-            <input type="text" readonly="readonly" value="1" name="num" id="num" />
+            <input type="text" readonly="readonly" v-model="num" name="num" id="num" />
           </div>
-          <div class="input_right">+</div>
+          <div class="input_right" @click="addNum()">+</div>
         </div>
       </div>
-      <button class="addcart">加入购物车</button>
+      <button class="addcart" @click="addCart()">加入购物车</button>
     </footer>
   </div>
 </template>
@@ -46,7 +45,8 @@ export default {
     return {
       id: this.$route.params.id,
       api: config.api,
-      food:[]
+      food:{},
+      num:1,
     };
   },
   mounted() {
@@ -70,6 +70,37 @@ export default {
           // 响应错误回调
         }
       );
+    },
+    minusNum(){
+      if(this.num<=1){
+        return;
+      }else {
+        this.num--;
+      }
+    },
+    addNum(){
+      this.num++;
+    },
+    addCart(){
+      let api=this.api+"api/addCart"
+      this.$http.post(api,{
+        uid:"s001",
+        title:this.food.title,
+        price:this.food.price,
+        num:this.num,
+        product_id:this.food._id,
+        img_url:this.food.img_url
+      }).then((response)=>{
+        console.log(response)
+        if(response.body.success==="true"){
+          console.log(response.body.success)
+          this.$router.push(
+            {path:"/home"}
+          )
+        }
+      },(error)=>{
+        console.log(error)
+      })
     }
   },
   
@@ -147,8 +178,8 @@ export default {
 .pfooter {
   position: fixed;
   bottom: 0;
-  height: 4.4rem;
-  line-height: 4.4rem;
+  height: 6rem;
+  line-height: 6rem;
   background: #fff;
   left: 0px;
   width: 100%;
@@ -162,15 +193,16 @@ export default {
       padding: 0rem 1rem;
     }
     .cart_num {
-      width: 10rem;
+      width: 12rem;
       display: flex;
-      margin-top: 0.8rem;
+      margin-top: 1rem;
+      margin-left: 1rem;
       .input_left,
       .input_right {
         flex: 1;
-        width: 2.8rem;
-        height: 2.8rem;
-        line-height: 2.8rem;
+        width: 4rem;
+        height: 4rem;
+        line-height: 4rem;
         text-align: center;
         color: red;
         border: 1px solid #eee;
@@ -182,7 +214,7 @@ export default {
           width: 2rem;
           text-align: center;
           width: 100%;
-          height: 2.8rem;
+          height: 4rem;
           border: none;
           border-top: 1px solid #eee;
           border-bottom: 1px solid #eee;
@@ -199,8 +231,8 @@ export default {
     border: none;
     padding: 0 0.5rem;
     border-radius: 0.5rem;
-    margin-top: 0.8rem;
-    margin-right: 0.5rem;
+    margin-top: 1.6rem;
+    margin-right: 0.8rem;
   }
 }
 </style>
